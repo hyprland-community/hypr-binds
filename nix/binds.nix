@@ -1,6 +1,6 @@
-{ lib, jq, wofi, writeShellScriptBin }:
+{ lib, jq, pkgs, writeShellScriptBin }:
 
-{ launcher ? "${lib.getExe wofi} --dmenu -m -i -p 'Hypr binds'"
+{ launcher ? "wofi"
 , cmdcolor ? "cyan"
 , modkeyStyle ? "<b>$MOD$KEY</b> <i>$DESCRIPTION</i>"
 , dispatch ? true
@@ -21,6 +21,12 @@ let
     "59" = "Comma";
     "60" = "Dot";
   };
+
+  launcherCommand =
+    if launcher == "rofi"
+    then "${lib.getExe pkgs.rofi} -dmenu -markup-rows -i -p 'Hypr binds'"
+    else "${lib.getExe pkgs.wofi} --dmenu -m -i -p 'Hypr binds'";
+
   style =
     let
       modkey = builtins.replaceStrings
@@ -38,7 +44,7 @@ writeShellScriptBin "hypr-binds" ''
       map(.code |= ${builtins.toJSON keycodes} [.]) |
       sort_by(.mod) | .[] |
       select(.sub == "") |
-      "${style}" ' | ${launcher} |
+      "${style}" ' | ${launcherCommand} |
     # extract the command (dispatcher + arg)
     sed -n 's/.*<span color=\"${cmdcolor}\">\(.*\)<\/span>.*/\1/p' |
     ${if dispatch then ''

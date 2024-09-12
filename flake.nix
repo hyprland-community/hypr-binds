@@ -11,7 +11,10 @@
       (system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
-          hypr-binds = (pkgs.callPackage ./nix/binds.nix { }) { };
+          buildPkg = pkgs.callPackage ./nix/binds.nix { };
+
+          hypr-binds-wofi = buildPkg { };
+          hypr-binds-rofi = buildPkg { launcher = "rofi"; };
         in
         {
           homeManagerModules.default = {
@@ -19,8 +22,8 @@
           };
 
           packages = {
-            default = hypr-binds;
-            inherit hypr-binds;
+            default = hypr-binds-wofi;
+            inherit hypr-binds-wofi hypr-binds-rofi;
           };
         }
       );
