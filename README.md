@@ -30,15 +30,15 @@ Still here? Add it to your flake inputs:
 
 And add the package to your list of packages:
 
-```
-inherit (hypr-binds-flake.${system}) hypr-binds;
+```nix
+inherit (hypr-binds-flake.${system}) hypr-binds-wofi;
 ```
 
 ### Home Manager module
 
 Or make use of the Home Manager module by first adding it to your imports:
 
-```
+```nix
 imports = [
   hypr-binds-flake.homeManagerModules.${system}.default
 ];
@@ -60,7 +60,7 @@ It comes with defaults, but it's possible to customize it:
     enable = true;
     settings = {
       launcher = {
-        app = "${lib.getExe pkgs.wofi} --dmenu -m -i -p 'Hypr binds'";
+        app = "wofi"; # or rofi
         style = {
           modkey = "<b>$MOD$KEY</b> <i>$DESCRIPTION</i>";
           command = "cyan";
