@@ -1,6 +1,6 @@
-{ lib, jq, wofi, writeShellScriptBin }:
+{ lib, jq, pkgs, writeShellScriptBin }:
 
-{ launcher ? "${lib.getExe wofi} --dmenu -m -i -p 'Hypr binds'"
+{ launcher ? "${lib.getExe pkgs.wofi} --dmenu -m -i -p 'Hypr binds'"
 , cmdcolor ? "cyan"
 , modkeyStyle ? "<b>$MOD$KEY</b> <i>$DESCRIPTION</i>"
 , dispatch ? true

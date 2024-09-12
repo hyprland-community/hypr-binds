@@ -11,13 +11,12 @@
       (system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
-          hypr-binds =
-            if pkgs.stdenv.isLinux
-            then (pkgs.callPackage ./nix/binds.nix { }) { }
-            else
-              (pkgs.callPackage ./nix/binds.nix { }) {
-                launcher = "${pkgs.lib.getExe pkgs.rofi} -dmenu -i -markup-rows -p 'Hypr binds'";
-              };
+          buildPkg = pkgs.callPackage ./nix/binds.nix { };
+
+          hypr-binds-wofi = buildPkg { };
+          hypr-binds-rofi = buildPkg {
+            launcher = "${pkgs.lib.getExe pkgs.rofi} -dmenu -i -markup-rows -p 'Hypr binds'";
+          };
         in
         {
           homeManagerModules.default = {
@@ -25,8 +24,8 @@
           };
 
           packages = {
-            default = hypr-binds;
-            inherit hypr-binds;
+            default = hypr-binds-wofi;
+            inherit hypr-binds-wofi hypr-binds-rofi;
           };
         }
       );
