@@ -14,9 +14,7 @@
           buildPkg = pkgs.callPackage ./nix/binds.nix { };
 
           hypr-binds-wofi = buildPkg { };
-          hypr-binds-rofi = buildPkg {
-            launcher = "${pkgs.lib.getExe pkgs.rofi} -dmenu -i -markup-rows -p 'Hypr binds'";
-          };
+          hypr-binds-rofi = buildPkg { launcher = "rofi"; };
         in
         {
           homeManagerModules.default = {

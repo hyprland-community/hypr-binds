@@ -14,9 +14,9 @@ in
     settings = {
       launcher = {
         app = mkOption {
-          type = types.str;
-          description = "The launcher application (defaults to wofi, but others like rofi can be used)";
-          default = "${lib.getExe pkgs.wofi} --dmenu -m -i -p 'Hypr binds'";
+          type = types.enum [ "rofi" "wofi" ];
+          description = "The launcher application";
+          default = "wofi";
         };
 
         style = {
