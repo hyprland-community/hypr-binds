@@ -11,7 +11,7 @@ Keybinds helper for Hyprland.
 
 * [How to use](#how-to-use)
 * [Nix support](#nix-support)
-  * [Home Manager module](#home-manager-module)
+  * [Home Manager](#home-manager)
 * [General support](#general-support)
 
 ## How to use
@@ -43,7 +43,7 @@ And add the package to your list of packages:
 inherit (hypr-binds-flake.${system}) hypr-binds-wofi;
 ```
 
-### Home Manager module
+### Home Manager
 
 Or make use of the Home Manager module by first adding it to your imports:
 
