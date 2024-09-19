@@ -7,9 +7,18 @@ Keybinds helper for Hyprland.
 
 ![binds](./imgs/hypr-binds.png)
 
+## Table of Contents
+
+* [How to use](#how-to-use)
+* [Nix support](#nix-support)
+  * [Home Manager](#home-manager)
+* [General support](#general-support)
+
 ## How to use
 
-NOTE: *For now, only Nix flake is supported. Broader support may be considered if there's enough interest*.
+The `hypr-binds` program is mainly customizable via Home Manager (see below), but a program with sane defaults both for [Wofi](https://sr.ht/~scoopta/wofi/) and [Rofi](https://github.com/davatorium/rofi) is provided out of the box for *all Linux users*.
+
+## Nix support
  
 Try it out before buying:
 
@@ -34,7 +43,7 @@ And add the package to your list of packages:
 inherit (hypr-binds-flake.${system}) hypr-binds-wofi;
 ```
 
-### Home Manager module
+### Home Manager
 
 Or make use of the Home Manager module by first adding it to your imports:
 
@@ -71,3 +80,12 @@ It comes with defaults, but it's possible to customize it:
   };
 }
 ```
+
+## General support
+
+The same script one can run via `nix` is also generally available for all non-nix users as simple bash scripts where the only hard dependencies are `bash` and [jq](https://github.com/jqlang/jq), besides either Wofi or Rofi.
+
+Users are welcome to download either script and modify it at will:
+
+- Rofi: [v0.0.1/hypr-binds-rofi.sh](https://github.com/hyprland-community/hypr-binds/releases/download/v0.0.1/hypr-binds-rofi.sh)
+- Wofi: [v0.0.1/hypr-binds-wofi.sh](https://github.com/hyprland-community/hypr-binds/releases/download/v0.0.1/hypr-binds-wofi.sh)
