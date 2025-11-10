@@ -16,7 +16,7 @@ Keybinds helper for Hyprland.
 
 ## How to use
 
-The `hypr-binds` program is mainly customizable via Home Manager (see below), but a program with sane defaults both for [Wofi](https://sr.ht/~scoopta/wofi/) and [Rofi](https://github.com/davatorium/rofi) is provided out of the box for *all Linux users*.
+The `hypr-binds` program is mainly customizable via Home Manager (see below), but a program with sane defaults for [Wofi](https://sr.ht/~scoopta/wofi/), [Rofi](https://github.com/davatorium/rofi), and [Fuzzel](https://codeberg.org/dnkl/fuzzel) are provided out of the box for *all Linux users*.
 
 ## Nix support
  
@@ -69,7 +69,7 @@ It comes with defaults, but it's possible to customize it:
     enable = true;
     settings = {
       launcher = {
-        app = "wofi"; # or rofi
+        app = "wofi"; # or rofi or fuzzel
         style = {
           modkey = "<b>$MOD$KEY</b> <i>$DESCRIPTION</i>";
           command = "cyan";
@@ -83,7 +83,7 @@ It comes with defaults, but it's possible to customize it:
 
 ## General support
 
-The same script one can run via `nix` is also generally available for all non-nix users as simple bash scripts where the only hard dependencies are `bash` and [jq](https://github.com/jqlang/jq), besides either Wofi or Rofi.
+The same script one can run via `nix` is also generally available for all non-nix users as simple bash scripts where the only hard dependencies are `bash` and [jq](https://github.com/jqlang/jq), besides Wofi, Rofi, or Fuzzel.
 
 Users are welcome to download either script and modify it at will:
 
