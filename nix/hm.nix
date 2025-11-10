@@ -14,7 +14,7 @@ in
     settings = {
       launcher = {
         app = mkOption {
-          type = types.enum [ "rofi" "wofi" ];
+          type = types.enum [ "rofi" "wofi" "fuzzel" ];
           description = "The launcher application";
           default = "wofi";
         };
