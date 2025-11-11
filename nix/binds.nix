@@ -23,20 +23,45 @@ let
     "59" = "Comma";
     "60" = "Dot";
   };
+  launcherConfigs = {
+    fuzzel = {
+      cmd = "${lib.getExe pkgs.fuzzel} --dmenu --width=100 -p 'Hypr binds '";
+      # Fuzzel doesn't support pango formatting
+      style = ''\(.mod)\(if .key == "" then .code else .key end) | \(.desc) | \(.dp) \(.arg)'';
+      pipeline = cmd: ''column -t -s '|' | ${cmd}'';
+      extract = ''sed -n 's/.*  \([^ ].*\)$/\1/p' '';
+    };
 
-  launcherCommand =
-    if launcher == "rofi"
-    then "${lib.getExe pkgs.rofi} -dmenu -markup-rows -i -p 'Hypr binds'"
-    else "${lib.getExe pkgs.wofi} --dmenu -m -i -p 'Hypr binds'";
+    wofi = {
+      cmd = "${lib.getExe pkgs.wofi} --dmenu -m -i -p 'Hypr binds'";
+      style =
+        let
+          modkey = builtins.replaceStrings
+            [ "$MOD" "$KEY" "$DESCRIPTION" ]
+            [ "\\(.mod)" "\\(if .key == \"\" then .code else .key end)" "\\(.desc)" ]
+            modkeyStyle;
+        in
+        ''${modkey} <span color=\"${cmdcolor}\">\(.dp) \(.arg)</span>'';
+      pipeline = cmd: cmd;
+      extract = ''sed -n 's/.*<span color=\"${cmdcolor}\">\(.*\)<\/span>.*/\1/p' '';
+    };
 
-  style =
-    let
-      modkey = builtins.replaceStrings
-        [ "$MOD" "$KEY" "$DESCRIPTION" ]
-        [ "\\(.mod)" "\\(if .key == \"\" then .code else .key end)" "\\(.desc)" ]
-        modkeyStyle;
-    in
-    ''${modkey} <span color=\"${cmdcolor}\">\(.dp) \(.arg)</span>'';
+    rofi = {
+      cmd = "${lib.getExe pkgs.rofi} -dmenu -markup-rows -i -p 'Hypr binds'";
+      style =
+        let
+          modkey = builtins.replaceStrings
+            [ "$MOD" "$KEY" "$DESCRIPTION" ]
+            [ "\\(.mod)" "\\(if .key == \"\" then .code else .key end)" "\\(.desc)" ]
+            modkeyStyle;
+        in
+        ''${modkey} <span color=\"${cmdcolor}\">\(.dp) \(.arg)</span>'';
+      pipeline = cmd: cmd;
+      extract = ''sed -n 's/.*<span color=\"${cmdcolor}\">\(.*\)<\/span>.*/\1/p' '';
+    };
+  };
+
+  config = launcherConfigs.${launcher} or launcherConfigs.wofi;
 in
 writeShellScriptBin "hypr-binds" ''
   hyprctl binds -j |
@@ -46,13 +71,11 @@ writeShellScriptBin "hypr-binds" ''
       map(.code |= ${builtins.toJSON keycodes} [.]) |
       sort_by(.mod) | .[] |
       select(.sub == "") |
-      "${style}" ' | ${launcherCommand} |
-    # extract the command (dispatcher + arg)
-    sed -n 's/.*<span color=\"${cmdcolor}\">\(.*\)<\/span>.*/\1/p' |
+      "${config.style}" ' |
+    ${config.pipeline config.cmd} |
+    ${config.extract} |
     ${if dispatch then ''
-      # add double quotes to the string so it can be piped to hyprctl dispatch
       sed -e 's/^/"/g' -e 's/$/"/g' |
       xargs -n1 hyprctl dispatch
-      '' else "xargs"
-    }
+    '' else "xargs"}
 ''

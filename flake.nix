@@ -15,6 +15,7 @@
 
           hypr-binds-wofi = buildPkg { };
           hypr-binds-rofi = buildPkg { launcher = "rofi"; };
+          hypr-binds-fuzzel = buildPkg { launcher = "fuzzel"; };
         in
         {
           homeManagerModules.default = {
@@ -23,7 +24,7 @@
 
           packages = {
             default = hypr-binds-wofi;
-            inherit hypr-binds-wofi hypr-binds-rofi;
+            inherit hypr-binds-wofi hypr-binds-rofi hypr-binds-fuzzel;
           };
         }
       );
