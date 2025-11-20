@@ -13,7 +13,8 @@ let
     "4" = "CTRL+";
     "5" = "SHIFT+CTRL+";
     "8" = "ALT+";
-    "12" = "CTRL+ALT";
+    "9" = "SHIFT+ALT+";
+    "12" = "CTRL+ALT+";
     "64" = "SUPER+";
     "65" = "SUPER+SHIFT+";
     "68" = "SUPER+CTRL+";
